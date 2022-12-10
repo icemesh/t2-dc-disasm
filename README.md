@@ -1,4 +1,4 @@
-# t2-dc–disasm
+# t2-dc-disasm
 Tool for decompiling The Last Of Us: Part II scripts
 
 # Tutorial

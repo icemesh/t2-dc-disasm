@@ -24,6 +24,7 @@
     <ProjectGuid>{c70b828e-bbed-4eff-91dc-0084c2e8fc78}</ProjectGuid>
     <RootNamespace>t2dcdisasm</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>t2-dc-disasm</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
