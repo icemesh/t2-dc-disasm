@@ -32,5 +32,5 @@ jobs:
       with:
         name: ${{ GITHUB.REPOSITORY }}
         path: |
-          x64\**\*.exe
-          x64\**\*.pdb
+          x64/**/*.exe
+          x64/**/*.pdb
