@@ -27,10 +27,10 @@ jobs:
       working-directory: ${{env.GITHUB_WORKSPACE}}
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
 
-   - name: 'Upload Artifact'
-     uses: actions/upload-artifact@v3
-     with:
-       name: t2-dc–disasm
-       path: |
-         x64\**\*.exe
-         x64\**\*.pdb
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ GITHUB.REPOSITORY }}
+        path: |
+          x64\**\*.exe
+          x64\**\*.pdb
