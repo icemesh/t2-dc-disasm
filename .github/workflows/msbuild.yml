@@ -30,7 +30,7 @@ jobs:
    - name: 'Upload Artifact'
      uses: actions/upload-artifact@v3
      with:
-      name: t2-dc–disasm
-      path: |
-        x64\**\*.exe
-        x64\**\*.pdb
+       name: t2-dc–disasm
+       path: |
+         x64\**\*.exe
+         x64\**\*.pdb
