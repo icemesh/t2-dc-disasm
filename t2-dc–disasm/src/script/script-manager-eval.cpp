@@ -22,7 +22,6 @@ extern DC::StackFrame* g_unkArea;
 
 extern uintptr_t g_moduleBase;
 
-const char* g_pFunction = nullptr;
 int g_globalIdx = 0;
 
 DC::Variant ExecuteScriptCode(ScriptLambda* pLambda)
@@ -124,7 +123,6 @@ DC::Variant ExecuteScriptCode(ScriptLambda* pLambda)
 				g_stackFrame->m_registers[dstReg] = val;
 				printf("DC::kLoadStaticInteger: R%d, [pSymbolTbl, R%d] -> 0x%016llX\n", dstReg, operand1, g_stackFrame->m_registers[dstReg].m_I64);
 				//printf("Registers:  R%d -> 0x%.16llX\n\t\t\t\t\t\t\tR%d -> 0x%.16llX\n", dstReg, g_stackFrame->m_registers[dstReg].m_I64, operand1, g_stackFrame->m_registers[operand1].m_U32);
-				//g_pFunction = StringIdToStringInternal(g_stackFrame->m_registers[dstReg].m_U64);
 				idx = tmpIdx;
 				break;
 			}
@@ -142,7 +140,6 @@ DC::Variant ExecuteScriptCode(ScriptLambda* pLambda)
 				g_stackFrame->m_registers[dstReg].m_I64 = pSymbolTbl[g_stackFrame->m_registers[operand1].m_I64].m_U64;
 				printf("DC::kLoadStaticPointer: R%d, [pSymbolTbl, R%d]\n", dstReg, operand1);
 				//printf("Registers:  R%d -> 0x%.16llX\n\t\t\t\t\t\t\tR%d -> 0x%.16llX\n", dstReg, g_stackFrame->m_registers[dstReg].m_I64, operand1, g_stackFrame->m_registers[operand1].m_U32);
-				//g_pFunction = StringIdToStringInternal(g_stackFrame->m_registers[dstReg].m_U32);
 				idx = tmpIdx;
 				break;
 			}
@@ -221,7 +218,6 @@ DC::Variant ExecuteScriptCode(ScriptLambda* pLambda)
 				//printf("DC::kLookupInteger/kLookupFloat: R%d R%d -> 0x%016llX\n", opcode, dstReg, operand1, operand2, dstReg, operand1, pSymbolTbl[operand1].m_U32);
 				printf("DC::kLookupInteger/kLookupFloat: R%d R%d -> hashid: 0x%016llX(%s)\n", dstReg, operand1, pSymbolTbl[operand1].m_U64, StringIdToStringInternal(pSymbolTbl[operand1].m_U64));
 				//	g_stackFrame->m_registers[dstReg].m_U64 = 0;
-				//g_pFunction = StringIdToStringInternal(pSymbolTbl[operand1].m_I64);
 				g_stackFrame->m_registers[dstReg].m_I64 = pSymbolTbl[operand1].m_I64;
 				idx = tmpIdx;
 				break;
@@ -242,7 +238,6 @@ DC::Variant ExecuteScriptCode(ScriptLambda* pLambda)
 			{
 				//g_stackFrame->m_registers[dstReg].m_U64 = g_stackFrame->m_registers[operand1].m_U64;
 				g_stackFrame->m_registers[dstReg] = g_stackFrame->m_registers[operand1];
-				//this shit is implying that a single register has at least 0x210 bytes..
 				//mov     rax, [rbp+r15*8+s+208h]
 				//mov     [rbp+rsi*8+s+208h], rax
 				//g_unkArea->m_registers[dstReg].m_U64 = g_stackFrame->m_registers[operand1].m_U64;
@@ -282,19 +277,14 @@ DC::Variant ExecuteScriptCode(ScriptLambda* pLambda)
 				if (pValue)
 				{
 					//g_stackFrame->m_registers[dstReg] = ExecuteScriptCode(pValue);
-					
-					//numberOfMovBeforeCall = GetNumberOfMovInsBeforeCall(&pOpcode[sizeof(ScriptInstruction) * idx]);
-					//printf("numberOfMovBeforeCall: %d\n", numberOfMovBeforeCall);
-					//g_pFunction = StringIdToStringInternal(g_stackFrame->m_registers[49].m_U64);
 					printf("DC::kCall: '%s(", StringIdToStringInternal(g_stackFrame->m_registers[operand1].m_U64));
 					int8_t argc = pOpcode[sizeof(ScriptInstruction) * idx + 0x3];
-					//int8_t argc = pOpcode[sizeof(ScriptInstruction) * operand1 + 0x41];
 					PrintCallArgs(g_stackFrame, argc);
 					puts(")");
 				}
 				else
 				{
-					printf("DC::kCall: Unable to call defun '%s' (check TTY for load symbol failed) - is it defined in a .dc file that is (include)d?  Use (load-relative) instead.\n", g_pFunction);
+					puts("DC::kCall: Unable to call defun");
 				}
 		//		DebugDumpRegisters(g_stackFrame);
 		//		DebugDumpRegisters(g_unkArea);
@@ -306,13 +296,6 @@ DC::Variant ExecuteScriptCode(ScriptLambda* pLambda)
 			case DC::kCallFf:
 			{
 				uint64_t data = g_stackFrame->m_registers[operand1].m_U64;
-				//TODO: count the number of DC::kMoveInteger/kMovePointer/kMove that happens before this opcode
-				//tahts the number of args that the functions wants
-				//numberOfMovBeforeCall = GetNumberOfMovInsBeforeCall(&pOpcode[sizeof(ScriptInstruction) * idx]);
-				//printf("numberOfMovBeforeCall: %d\n", numberOfMovBeforeCall);
-				//R0
-				//g_pFunction = StringIdToStringInternal(g_stackFrame->m_registers[49].m_U64);
-				//printf("DC::kCallFf: %s(", g_pFunction);
 				printf("DC::kCallFf: '%s(", StringIdToStringInternal(g_stackFrame->m_registers[operand1].m_U64));
 				
 				int8_t argc = pOpcode[sizeof(ScriptInstruction) * idx + 0x3];
@@ -876,18 +859,6 @@ void DebugDumpRegisters(DC::StackFrame* pFrame)
 		}
 		*/
 	}
-}
-
-int GetNumberOfMovInsBeforeCall(uint8_t* pOpcode)
-{
-	int count = 0;
-	pOpcode -= 0x4;
-	while (*pOpcode == DC::kMoveInteger || *pOpcode == DC::kMovePointer || *pOpcode == DC::kMove)
-	{
-		count++;
-		pOpcode -= 0x4;
-	}
-	return count;
 }
 
 void PrintCallArgs(DC::StackFrame* pFrame, int count)

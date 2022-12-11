@@ -152,6 +152,4 @@ DC::Variant ExecuteScriptCode(ScriptLambda* pLambda);
 
 void DebugDumpRegisters(DC::StackFrame* pFrame);
 
-int GetNumberOfMovInsBeforeCall(uint8_t* pOpcode);
-
 void PrintCallArgs(DC::StackFrame* pFrame, int count);
