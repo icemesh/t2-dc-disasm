@@ -84,6 +84,7 @@ char* StringIdToStringInternal(uint64_t sid)
 		}
 	}
 	//else lookup in the local cache
+	/*
 	if (g_pStringIdCache != nullptr)
 	{
 		char* pStr = g_pStringIdCache->LookupStringId(sid);
@@ -92,6 +93,7 @@ char* StringIdToStringInternal(uint64_t sid)
 			return pStr;
 		}
 	}
+	*/
 	//if nothing else worked just print the sid
 	snprintf(g_sidBuffer, 0x20, "#%.16llX", sid);
 	return g_sidBuffer;

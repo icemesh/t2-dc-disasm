@@ -58,7 +58,7 @@ void StringIdCache::GetDebugInfo(DC_Header* pHdr)
 								ptr++;
 								sscanf_s(ptr, "%s", &stateName, 256);
 								//add the state name to our local cache
-								g_pStringIdCache->AddStringToLocalSidCache(stateName);
+//								g_pStringIdCache->AddStringToLocalSidCache(stateName);
 							}
 							else
 							{
