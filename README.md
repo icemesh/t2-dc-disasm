@@ -13,4 +13,4 @@ Open the terminal and run the following command:
 This will redirect the output of the program to the file ss-asoria-test-interactions.txt
 
 # Notes
-- The program will output a file called state-sids.txt. This file will have all the states name from the script that has been analyzed. This file gets generated because i didn't have time to run every single script against this program. Once you get enough entries please let me know and i will add them to the sidbase.bin. Once every file has been analyzed i\'ll remove the function.
+- Please let me know if a state name is not resolved.

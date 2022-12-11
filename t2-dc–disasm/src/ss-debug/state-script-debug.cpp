@@ -145,6 +145,20 @@ void PrintVariable(SsDeclaration* pDecl)
 			break;
 		}
 
+		case SID("bound-frame"):
+		{
+			float* pVal = reinterpret_cast<float*>(pDecl->m_pDeclValue);
+			if (pVal)
+			{
+				printf("(var bound-frame '%s = ??? Tell icemesh - i really doubt we should be here\n", StringIdToStringInternal(pDecl->m_declId));
+			}
+			else
+			{
+				printf("(var bound-frame '%s = (??? ??? ???) (??? ??? ??? ???) (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
+			}
+			break;
+		}
+
 		default:
 		{
 			printf("(var '%s '%s = ???\n", StringIdToStringInternal(pDecl->m_declTypeId), StringIdToStringInternal(pDecl->m_declId));

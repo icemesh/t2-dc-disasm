@@ -13,7 +13,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-StringIdCache* g_pStringIdCache = nullptr;
+//StringIdCache* g_pStringIdCache = nullptr; disabled for now
 uintptr_t g_moduleBase = 0;
 DC::StackFrame* g_stackFrame = nullptr;
 //DC::StackFrame* g_unkArea = nullptr;
@@ -32,10 +32,10 @@ int main(int argc, const char* aArgv[])
 				void* pFile = pModule->GetLoadedFilePtr();
 				g_moduleBase = reinterpret_cast<uintptr_t>(pFile);
 				DC_Header* pHdr = reinterpret_cast<DC_Header*>(pFile);
-				g_pStringIdCache = new StringIdCache();
+				//g_pStringIdCache = new StringIdCache();
 				g_stackFrame = (DC::StackFrame*)malloc(sizeof(DC::StackFrame) * 2);
 				assert(g_stackFrame != NULL);
-				g_pStringIdCache->GetDebugInfo(pHdr);
+				//g_pStringIdCache->GetDebugInfo(pHdr);
 				InitSidbase();
 				int32_t numEntries = pHdr->m_numEntries;
 				Entry* pTable = pHdr->m_pStartOfData;
@@ -44,8 +44,10 @@ int main(int argc, const char* aArgv[])
 					pModule->DumpEntry(&pTable[i]);
 				}
 				ShutdownSidbase();
+				/*
 				g_pStringIdCache->PrintCacheEntries();
 				delete g_pStringIdCache;
+				*/
 				free(g_stackFrame);
 			}
 			delete pModule;

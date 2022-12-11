@@ -39,4 +39,4 @@ private:
 	CachedStringId		m_array[kMaxStringIdCacheEntries];
 };
 
-extern StringIdCache* g_pStringIdCache;
+//extern StringIdCache* g_pStringIdCache;
