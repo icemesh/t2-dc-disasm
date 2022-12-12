@@ -37,7 +37,7 @@ void PrintVariable(SsDeclaration* pDecl)
 			float* pVal = reinterpret_cast<float*>(pDecl->m_pDeclValue);
 			if (pVal)
 			{
-				printf("(var vector '%s = %.2f %.2f %.2f) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), pVal[0], pVal[1], pVal[2], ((uintptr_t)pVal - g_moduleBase));
+				printf("(var vector '%s = %.4f %.4f %.4f %.4f) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), pVal[0], pVal[1], pVal[2], pVal[3], ((uintptr_t)pVal - g_moduleBase));
 			}
 			else
 			{
