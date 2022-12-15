@@ -284,13 +284,13 @@ void PrintTag(SsDeclaration* pDecl)
 
 void DumpState(SsState* pState)
 {
-	printf("\t(state (\"%s\")\n", StringIdToStringInternal(pState->m_stateId));
+	printf("  (state (\"%s\")\n", StringIdToStringInternal(pState->m_stateId));
 	int64_t maxBlocks = pState->m_numSsOnBlocks;
 	for (int32_t iBlocks = 0; iBlocks < maxBlocks; iBlocks++)
 	{
 		DumpBlocks(&pState->m_pSsOnBlocks[iBlocks]);
 	}
-	puts("\t)\n");
+	puts("  )\n");
 }
 
 void DumpBlocks(SsOnBlock* pBlock)
@@ -339,18 +339,17 @@ void DumpBlocks(SsOnBlock* pBlock)
 			break;
 		}
 	}
-	printf("\t\t(on (%s)\n", blockType);
+	printf("    (on (%s)\n", blockType);
 	for (int i = 0; i < pBlock->m_numTracks; i++)
 	{
 		PrintTrackGroup(&pBlock->m_pTrack[i]);
 	}
-
-	puts("\t\t)");
+	puts("    )");
 }
 
 void PrintTrackGroup(SsTrack* pTrack)
 {
-	printf("\t\t\t(track (\"%s\")\n", StringIdToStringInternal(pTrack->m_trackId));
+	printf("      (track (\"%s\")\n", StringIdToStringInternal(pTrack->m_trackId));
 	int16_t tot = pTrack->m_totalLambdaCount;
 	SsLambda* pTable = pTrack->m_pSsLambda;
 	for (int16_t i = 0; i < tot; i++)
@@ -358,19 +357,19 @@ void PrintTrackGroup(SsTrack* pTrack)
 		SsLambda* pdata = &pTable[i];
 		ExecuteScriptCode(pdata->m_pScriptLambda);
 	}
-	puts("\t\t\t)");
+	puts("      )");
 }
 
 void DumpScript(StateScript* pStateScript)
 {
 	printf("(location \"%s\":%d)\n", pStateScript->m_pDebugFileName, pStateScript->m_line);
-	printf("\t:initial-state '%s  //value @ %08llX\n", StringIdToStringInternal(pStateScript->m_initialStateId), ((uintptr_t)&(pStateScript->m_initialStateId) - g_moduleBase));
+	printf("  :initial-state '%s  //value @ %08llX\n", StringIdToStringInternal(pStateScript->m_initialStateId), ((uintptr_t) & (pStateScript->m_initialStateId) - g_moduleBase));
 	//dump eventual ss-options
 	SsOptions* pOptions = pStateScript->m_pSsOptions;
 	if (pOptions != NULL && pOptions->m_pSymbolArray != NULL)
 	{
 		SymbolArray* pArr = pOptions->m_pSymbolArray;
-		printf("\t:options (new ss-options :wait-for-levels (make-symbol-array ");
+		printf("  :options (new ss-options :wait-for-levels (make-symbol-array ");
 		for (int32_t iSymbols = 0; iSymbols < pArr->m_numEntries; iSymbols++)
 		{
 			printf("'%s ", StringIdToStringInternal(pArr->m_pSymbols[iSymbols]));
@@ -382,23 +381,22 @@ void DumpScript(StateScript* pStateScript)
 	if (pDeclTable != NULL)
 	{
 		int32_t maxDecl = pDeclTable->m_numDeclarations;
-		//printf("(declarations (%d)\n", maxDecl);
-		printf("\t:declarations (declaration-list \n");
+		printf("  :declarations (declaration-list \n");
 		for (int i = 0; i < maxDecl; i++)
 		{
 			SsDeclaration* pDecl = &pDeclTable->m_pDeclarations[i];
 			if ((pDecl->m_isVar & 1) != 0)
 			{
-				printf("\t\t");
+				printf("    ");
 				PrintVariable(pDecl);
 			}
 			else
 			{
-				printf("\t\t");
+				printf("    ");
 				PrintTag(pDecl);
 			}
 		}
-		puts("\t)");
+		puts("  )");
 	}
 	//dump states
 	puts("");
