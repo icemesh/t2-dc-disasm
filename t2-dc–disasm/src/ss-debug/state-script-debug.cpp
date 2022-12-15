@@ -284,13 +284,21 @@ void PrintTag(SsDeclaration* pDecl)
 
 void DumpState(SsState* pState)
 {
+#ifdef WANTS_TABS
 	printf("\t(state (\"%s\")\n", StringIdToStringInternal(pState->m_stateId));
+#else
+	printf("    (state (\"%s\")\n", StringIdToStringInternal(pState->m_stateId));
+#endif
 	int64_t maxBlocks = pState->m_numSsOnBlocks;
 	for (int32_t iBlocks = 0; iBlocks < maxBlocks; iBlocks++)
 	{
 		DumpBlocks(&pState->m_pSsOnBlocks[iBlocks]);
 	}
-	puts("\t)\n");
+#ifdef WANTS_TABS
+	puts("\t)");
+#else
+	puts("    )");
+#endif
 }
 
 void DumpBlocks(SsOnBlock* pBlock)
@@ -339,18 +347,30 @@ void DumpBlocks(SsOnBlock* pBlock)
 			break;
 		}
 	}
+#ifdef WANTS_TABS
 	printf("\t\t(on (%s)\n", blockType);
+#else
+	printf("        (on (%s)\n", blockType);
+#endif
 	for (int i = 0; i < pBlock->m_numTracks; i++)
 	{
 		PrintTrackGroup(&pBlock->m_pTrack[i]);
 	}
 
+#ifdef WANTS_TABS
 	puts("\t\t)");
+#else
+	puts("        )");
+#endif
 }
 
 void PrintTrackGroup(SsTrack* pTrack)
 {
+#ifdef WANTS_TABS
 	printf("\t\t\t(track (\"%s\")\n", StringIdToStringInternal(pTrack->m_trackId));
+#else
+	printf("            (track (\"%s\")\n", StringIdToStringInternal(pTrack->m_trackId));
+#endif
 	int16_t tot = pTrack->m_totalLambdaCount;
 	SsLambda* pTable = pTrack->m_pSsLambda;
 	for (int16_t i = 0; i < tot; i++)
@@ -358,19 +378,31 @@ void PrintTrackGroup(SsTrack* pTrack)
 		SsLambda* pdata = &pTable[i];
 		ExecuteScriptCode(pdata->m_pScriptLambda);
 	}
+#ifdef WANTS_TABS
 	puts("\t\t\t)");
+#else
+	puts("            )");
+#endif
 }
 
 void DumpScript(StateScript* pStateScript)
 {
 	printf("(location \"%s\":%d)\n", pStateScript->m_pDebugFileName, pStateScript->m_line);
-	printf("\t:initial-state '%s  //value @ %08llX\n", StringIdToStringInternal(pStateScript->m_initialStateId), ((uintptr_t)&(pStateScript->m_initialStateId) - g_moduleBase));
+#ifdef WANTS_TABS
+	printf("\t:initial-state '%s  // value @ %08llX\n", StringIdToStringInternal(pStateScript->m_initialStateId), ((uintptr_t) & (pStateScript->m_initialStateId) - g_moduleBase));
+#else
+	printf("    :initial-state '%s  // value @ %08llX\n", StringIdToStringInternal(pStateScript->m_initialStateId), ((uintptr_t)&(pStateScript->m_initialStateId) - g_moduleBase));
+#endif
 	//dump eventual ss-options
 	SsOptions* pOptions = pStateScript->m_pSsOptions;
 	if (pOptions != NULL && pOptions->m_pSymbolArray != NULL)
 	{
 		SymbolArray* pArr = pOptions->m_pSymbolArray;
+#ifdef WANTS_TABS
 		printf("\t:options (new ss-options :wait-for-levels (make-symbol-array ");
+#else
+		printf("    :options (new ss-options :wait-for-levels (make-symbol-array ");
+#endif
 		for (int32_t iSymbols = 0; iSymbols < pArr->m_numEntries; iSymbols++)
 		{
 			printf("'%s ", StringIdToStringInternal(pArr->m_pSymbols[iSymbols]));
@@ -383,22 +415,38 @@ void DumpScript(StateScript* pStateScript)
 	{
 		int32_t maxDecl = pDeclTable->m_numDeclarations;
 		//printf("(declarations (%d)\n", maxDecl);
+#ifdef WANTS_TABS
 		printf("\t:declarations (declaration-list \n");
+#else
+		printf("    :declarations (declaration-list \n");
+#endif
 		for (int i = 0; i < maxDecl; i++)
 		{
 			SsDeclaration* pDecl = &pDeclTable->m_pDeclarations[i];
 			if ((pDecl->m_isVar & 1) != 0)
 			{
+#ifdef WANTS_TABS
 				printf("\t\t");
+#else
+				printf("        ");
+#endif
 				PrintVariable(pDecl);
 			}
 			else
 			{
+#ifdef WANTS_TABS
 				printf("\t\t");
+#else
+				printf("        ");
+#endif
 				PrintTag(pDecl);
 			}
 		}
+#ifdef WANTS_TABS
 		puts("\t)");
+#else
+		puts("    )");
+#endif
 	}
 	//dump states
 	puts("");

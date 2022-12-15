@@ -62,7 +62,7 @@ int main(int argc, const char* aArgv[])
 	else
 	{
 		//print usage
-		printf("Usage: .\%s ss-xxxxx.bin\n", aArgv[0]);
+		printf("Usage: .\\%s ss-xxxxx.bin\n", aArgv[0]);
 		return 0;
 	}
 }
