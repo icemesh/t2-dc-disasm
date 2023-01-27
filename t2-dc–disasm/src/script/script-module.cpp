@@ -65,6 +65,7 @@ Module::Module(const char* filename)
 		else
 		{
 			puts("Failed to allocate file");
+			fclose(fh);
 		}
 	}
 	else
