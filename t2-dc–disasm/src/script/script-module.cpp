@@ -22,7 +22,9 @@ void Module::DumpEntry(Entry* pEntry)
 	{
 		case SID("state-script"):
 		{
+			printf("(define-state-script %s\n", StringIdToStringInternal(pEntry->m_scriptId));
 			DumpScript(reinterpret_cast<StateScript*>(pEntry->m_entryPtr));
+			puts(")");
 			break;
 		}
 

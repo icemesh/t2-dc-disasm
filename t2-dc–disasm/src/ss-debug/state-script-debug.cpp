@@ -159,6 +159,20 @@ void PrintVariable(SsDeclaration* pDecl)
 			break;
 		}
 
+		case SID("uint64"):
+		{
+			uint64_t* pVal = reinterpret_cast<uint64_t*>(pDecl->m_pDeclValue);
+			if (pVal)
+			{
+				printf("(var uint64 '%s = %llX) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), *pVal, ((uintptr_t)pVal - g_moduleBase));
+			}
+			else
+			{
+				printf("(var uint64 '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
+			}
+			break;
+		}
+
 		default:
 		{
 			printf("(var '%s '%s = ???\n", StringIdToStringInternal(pDecl->m_declTypeId), StringIdToStringInternal(pDecl->m_declId));
@@ -172,113 +186,127 @@ void PrintTag(SsDeclaration* pDecl)
 {
 	switch (pDecl->m_declTypeId)
 	{
-	case SID("boolean"):
-	{
-		uint32_t* pVal = reinterpret_cast<uint32_t*>(pDecl->m_pDeclValue);
-		if (pVal)
+		case SID("boolean"):
 		{
-			printf("(tag boolean '%s = %s) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), *pVal == 1 ? "#t" : "#f", ((uintptr_t)pVal - g_moduleBase));
-		}
-		else
-		{
-			printf("(tag boolean '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
-		}
-		break;
-	}
-
-	case SID("string"):
-	{
-		char* pVal = reinterpret_cast<char*>(pDecl->m_pDeclValue);
-		if (pVal)
-		{
-			puts("IMPLEMENT ME SID(string) Tell icemesh");
-			//printf("(tag string '%s = \"%s\")")
-		}
-		else
-		{
-			printf("(tag string '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
+			uint32_t* pVal = reinterpret_cast<uint32_t*>(pDecl->m_pDeclValue);
+			if (pVal)
+			{
+				printf("(tag boolean '%s = %s) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), *pVal == 1 ? "#t" : "#f", ((uintptr_t)pVal - g_moduleBase));
+			}
+			else
+			{
+				printf("(tag boolean '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
+			}
+			break;
 		}
 
-		break;
-	}
+		case SID("string"):
+		{
+			char* pVal = reinterpret_cast<char*>(pDecl->m_pDeclValue);
+			if (pVal)
+			{
+				puts("IMPLEMENT ME SID(string) Tell icemesh");
+				//printf("(tag string '%s = \"%s\")")
+			}
+			else
+			{
+				printf("(tag string '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
+			}
 
-	case SID("float"):
-	{
-		float* pVal = reinterpret_cast<float*>(pDecl->m_pDeclValue);
-		if (pVal)
-		{
-			printf("(tag float '%s = %f) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), *pVal, ((uintptr_t)pVal - g_moduleBase));
+			break;
 		}
-		else
-		{
-			printf("(tag float '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
-		}
-		break;
-	}
 
-	case SID("identifier"):
-	{
-		StringId64* pVal = reinterpret_cast<StringId64*>(pDecl->m_pDeclValue);
-		if (pVal)
+		case SID("float"):
 		{
-			printf("(tag identifier '%s = %s) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), StringIdToStringInternal(*pVal), ((uintptr_t)pVal - g_moduleBase));
+			float* pVal = reinterpret_cast<float*>(pDecl->m_pDeclValue);
+			if (pVal)
+			{
+				printf("(tag float '%s = %f) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), *pVal, ((uintptr_t)pVal - g_moduleBase));
+			}
+			else
+			{
+				printf("(tag float '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
+			}
+			break;
 		}
-		else
-		{
-			printf("(tag identifier '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
-		}
-		
-		break;
-	}
 
-	case SID("symbol"):
-	{
-		StringId64* pVal = reinterpret_cast<StringId64*>(pDecl->m_pDeclValue);
-		if (pVal)
+		case SID("identifier"):
 		{
-			printf("(tag symbol '%s = %s) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), StringIdToStringInternal(*pVal), ((uintptr_t)pVal - g_moduleBase));
+			StringId64* pVal = reinterpret_cast<StringId64*>(pDecl->m_pDeclValue);
+			if (pVal)
+			{
+				printf("(tag identifier '%s = %s) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), StringIdToStringInternal(*pVal), ((uintptr_t)pVal - g_moduleBase));
+			}
+			else
+			{
+				printf("(tag identifier '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
+			}
+			
+			break;
 		}
-		else
-		{
-			printf("(tag symbol '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
-		}
-		break;
-	}
 
-	case SID("int32"):
-	{
-		int32_t* pVal = reinterpret_cast<int32_t*>(pDecl->m_pDeclValue);
-		if (pVal)
+		case SID("symbol"):
 		{
-			printf("(tag int32 '%s = %d) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), *pVal, ((uintptr_t)pVal - g_moduleBase));
+			StringId64* pVal = reinterpret_cast<StringId64*>(pDecl->m_pDeclValue);
+			if (pVal)
+			{
+				printf("(tag symbol '%s = %s) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), StringIdToStringInternal(*pVal), ((uintptr_t)pVal - g_moduleBase));
+			}
+			else
+			{
+				printf("(tag symbol '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
+			}
+			break;
 		}
-		else
-		{
-			printf("(tag int32 '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
-		}
-		break;
-	}
 
-	case SID("timer"):
-	{
-		float* pVal = reinterpret_cast<float*>(pDecl->m_pDeclValue);
-		if (pVal)
+		case SID("int32"):
 		{
-			printf("(tag timer '%s = %f) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), *pVal, ((uintptr_t)pVal - g_moduleBase));
+			int32_t* pVal = reinterpret_cast<int32_t*>(pDecl->m_pDeclValue);
+			if (pVal)
+			{
+				printf("(tag int32 '%s = %d) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), *pVal, ((uintptr_t)pVal - g_moduleBase));
+			}
+			else
+			{
+				printf("(tag int32 '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
+			}
+			break;
 		}
-		else
-		{
-			printf("(tag timer '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
-		}
-		break;
-	}
 
-	default:
-	{
-		printf("(tag %s '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declTypeId), StringIdToStringInternal(pDecl->m_declId));
-		puts("Tell icemesh");
-		break;
-	}
+		case SID("timer"):
+		{
+			float* pVal = reinterpret_cast<float*>(pDecl->m_pDeclValue);
+			if (pVal)
+			{
+				printf("(tag timer '%s = %f) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), *pVal, ((uintptr_t)pVal - g_moduleBase));
+			}
+			else
+			{
+				printf("(tag timer '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
+			}
+			break;
+		}
+
+		case SID("uint64"):
+		{
+			uint64_t* pVal = reinterpret_cast<uint64_t*>(pDecl->m_pDeclValue);
+			if (pVal)
+			{
+				printf("(tag uint64 '%s = %llX) //value @ %08llX\n", StringIdToStringInternal(pDecl->m_declId), *pVal, ((uintptr_t)pVal - g_moduleBase));
+			}
+			else
+			{
+				printf("(tag uint64 '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declId));
+			}
+			break;
+		}
+
+		default:
+		{
+			printf("(tag %s '%s = ??? (nullptr))\n", StringIdToStringInternal(pDecl->m_declTypeId), StringIdToStringInternal(pDecl->m_declId));
+			puts("Tell icemesh");
+			break;
+		}
 	}
 }
 
@@ -362,7 +390,7 @@ void PrintTrackGroup(SsTrack* pTrack)
 
 void DumpScript(StateScript* pStateScript)
 {
-	printf("(location \"%s\":%d)\n", pStateScript->m_pDebugFileName, pStateScript->m_line);
+	printf("  :location \"%s\":%d)\n", pStateScript->m_pDebugFileName, pStateScript->m_line);
 	printf("  :initial-state '%s  //value @ %08llX\n", StringIdToStringInternal(pStateScript->m_initialStateId), ((uintptr_t) & (pStateScript->m_initialStateId) - g_moduleBase));
 	//dump eventual ss-options
 	SsOptions* pOptions = pStateScript->m_pSsOptions;

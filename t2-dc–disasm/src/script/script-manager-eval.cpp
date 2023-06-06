@@ -33,6 +33,7 @@ DC::Variant ExecuteScriptCode(ScriptLambda* pLambda)
 	uint8_t* pOpcode = pLambda->m_pOpcode;
 	DC::Variant* pSymbolTbl = reinterpret_cast<DC::Variant*>(pLambda->m_pSymbols);
 	puts("        (");
+	int iLoc = 0;
 	while (1)
 	{
 		int8_t opcode = pOpcode[sizeof(ScriptInstruction) * idx];
@@ -40,7 +41,7 @@ DC::Variant ExecuteScriptCode(ScriptLambda* pLambda)
 		uint8_t operand1 = pOpcode[sizeof(ScriptInstruction) * idx + 0x2];
 		uint8_t operand2 = pOpcode[sizeof(ScriptInstruction) * idx + 0x3];
 		tmpIdx = idx + 0x1;
-		printf("            CODE: 0x%.08llX %02X %02X %02X %02X ", (reinterpret_cast<uintptr_t>(&pOpcode[sizeof(ScriptInstruction) * idx]) - g_moduleBase), opcode, dstReg, operand1, operand2);
+		printf("            loc_%d - CODE: 0x%.08llX %02X %02X %02X %02X ", iLoc++, (reinterpret_cast<uintptr_t>(&pOpcode[sizeof(ScriptInstruction) * idx]) - g_moduleBase), opcode, dstReg, operand1, operand2);
 		switch (opcode)
 		{
 			case DC::kScriptCodeReturn:
